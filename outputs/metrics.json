@@ -1,0 +1,30 @@
+{
+  "model": "distilbert/distilbert-base-uncased",
+  "task": "single-label technique classification",
+  "dataset_rows": {
+    "train": 34,
+    "validation": 9,
+    "test": 11
+  },
+  "label2id": {
+    "T1078": 0,
+    "T1566.001": 1,
+    "T1566.002": 2
+  },
+  "technique_names": {
+    "T1566.001": "Spearphishing Attachment",
+    "T1078": "Valid Accounts",
+    "T1566.002": "Spearphishing Link"
+  },
+  "test_metrics": {
+    "eval_loss": 1.051123023033142,
+    "eval_accuracy": 0.5454545454545454,
+    "eval_macro_precision": 0.8148148148148149,
+    "eval_macro_recall": 0.5277777777777778,
+    "eval_macro_f1": 0.5051282051282051,
+    "eval_runtime": 0.1855,
+    "eval_samples_per_second": 59.309,
+    "eval_steps_per_second": 16.175
+  },
+  "caveat": "If using sample_reports.csv, these are synthetic smoke-test results and must not be presented as real-world model performance."
+}

@@ -1,0 +1,10 @@
+report_id,report_text,technique_id,technique_name,source_url,label_evidence
+SYNNEW005,"During a tabletop exercise, an operator uses a compromised contractor account to reach a company portal.",T1078,Valid Accounts,synthetic://teaching-example,Synthetic teaching example; not a real incident report.
+SYN013,A fictional report notes that a threat actor signs in with an existing legitimate account.,T1078,Valid Accounts,synthetic://example/13,Synthetic teaching example; not a real incident report.
+SYNNEW028,"In a tabletop exercise, an employee receives a targeted email linking to a spoofed password-reset page.",T1566.002,Spearphishing Link,synthetic://teaching-example,Synthetic teaching example; not a real incident report.
+SYNNEW016,A simulated incident involves a recipient opening an unexpected document attached to a targeted email.,T1566.001,Spearphishing Attachment,synthetic://teaching-example,Synthetic teaching example; not a real incident report.
+SYN021,A fictional report describes an attached file delivered by a targeted phishing message.,T1566.001,Spearphishing Attachment,synthetic://example/21,Synthetic teaching example; not a real incident report.
+SYNNEW025,A classroom exercise describes spearphishing messages that use URLs instead of file attachments.,T1566.002,Spearphishing Link,synthetic://teaching-example,Synthetic teaching example; not a real incident report.
+SYN024,A mock exercise describes a malicious attachment sent through a targeted email.,T1566.001,Spearphishing Attachment,synthetic://example/24,Synthetic teaching example; not a real incident report.
+SYNNEW023,A simulated incident involves a targeted message persuading a recipient to click a malicious web link.,T1566.002,Spearphishing Link,synthetic://teaching-example,Synthetic teaching example; not a real incident report.
+SYNNEW008,"In a classroom exercise, an intruder reuses exposed account credentials to access a protected resource.",T1078,Valid Accounts,synthetic://teaching-example,Synthetic teaching example; not a real incident report.

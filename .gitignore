@@ -1,0 +1,44 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment variables & credentials
+.env
+.env.*
+*.pem
+*.key
+*.cert
+credentials.toml
+
+# IDE & Editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Large Model Checkpoints & Pretrained Weights (exceeds GitHub 100MB file limit)
+# Note: Use `python train_model.py` or Git LFS / HuggingFace to regenerate or host weights
+model/distilbert-attack-classifier/
+outputs/training_checkpoints/
+*.safetensors
+*.pt
+*.pth
+*.bin
+
+# Large external reference dataset (re-downloadable via `python fetch_attack.py`)
+data/enterprise-attack.json
+
+# Redundant nested extraction folder
+CyberThreatAI/

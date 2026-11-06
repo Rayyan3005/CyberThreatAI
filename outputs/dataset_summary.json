@@ -1,0 +1,14 @@
+{
+  "input": "data\\sample_reports_expanded.csv",
+  "rows_after_cleaning": 54,
+  "unique_techniques": 3,
+  "technique_counts": {
+    "T1566.002": 18,
+    "T1078": 18,
+    "T1566.001": 18
+  },
+  "train_rows": 34,
+  "validation_rows": 9,
+  "test_rows": 11,
+  "warning": "Synthetic demo data is only for pipeline smoke testing."
+}

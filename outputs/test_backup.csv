@@ -1,0 +1,12 @@
+report_id,report_text,technique_id,technique_name,source_url,label_evidence
+SYNNEW014,A fictional attacker sends a message with an attachment presented as an invoice to trick a recipient.,T1566.001,Spearphishing Attachment,synthetic://teaching-example,Synthetic teaching example; not a real incident report.
+SYNNEW012,"In a training scenario, a deceptive message attaches an office document containing a harmful payload.",T1566.001,Spearphishing Attachment,synthetic://teaching-example,Synthetic teaching example; not a real incident report.
+SYNNEW003,A training scenario shows an unauthorized person logging in with a valid account after obtaining its password.,T1078,Valid Accounts,synthetic://teaching-example,Synthetic teaching example; not a real incident report.
+SYN003,"In this fictional scenario, a malicious attachment is sent to a staff member in an email message.",T1566.001,Spearphishing Attachment,synthetic://example/3,Synthetic teaching example; not a real incident report.
+SYN006,A fictional incident summary says a user opened an attachment delivered through a targeted email.,T1566.001,Spearphishing Attachment,synthetic://example/6,Synthetic teaching example; not a real incident report.
+SYNNEW021,A fictional phishing message directs a targeted employee to a fraudulent sign-in webpage through a hyperlink.,T1566.002,Spearphishing Link,synthetic://teaching-example,Synthetic teaching example; not a real incident report.
+SYNNEW030,A fictional scenario involves an email hyperlink designed to send a recipient to an attacker-controlled website.,T1566.002,Spearphishing Link,synthetic://teaching-example,Synthetic teaching example; not a real incident report.
+SYN020,A mock scenario describes a targeted phishing email containing a deceptive URL.,T1566.002,Spearphishing Link,synthetic://example/20,Synthetic teaching example; not a real incident report.
+SYN005,A training scenario describes an email containing a link to a fraudulent login page.,T1566.002,Spearphishing Link,synthetic://example/5,Synthetic teaching example; not a real incident report.
+SYN022,A synthetic note states that valid account credentials were used to access an organisation's service.,T1078,Valid Accounts,synthetic://example/22,Synthetic teaching example; not a real incident report.
+SYNNEW007,A fictional scenario describes an attacker authenticating to a VPN with credentials belonging to a real employee.,T1078,Valid Accounts,synthetic://teaching-example,Synthetic teaching example; not a real incident report.

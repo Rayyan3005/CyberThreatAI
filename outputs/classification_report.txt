@@ -1,0 +1,9 @@
+                                      precision    recall  f1-score   support
+
+              T1078 — Valid Accounts       1.00      0.33      0.50         3
+T1566.001 — Spearphishing Attachment       1.00      0.25      0.40         4
+      T1566.002 — Spearphishing Link       0.44      1.00      0.62         4
+
+                            accuracy                           0.55        11
+                           macro avg       0.81      0.53      0.51        11
+                        weighted avg       0.80      0.55      0.51        11
