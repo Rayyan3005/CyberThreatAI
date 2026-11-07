@@ -29,8 +29,7 @@ credentials.toml
 Thumbs.db
 
 # Large Model Checkpoints & Pretrained Weights (exceeds GitHub 100MB file limit)
-# Note: Use `python train_model.py` or Git LFS / HuggingFace to regenerate or host weights
-model/distilbert-attack-classifier/
+# Note: Safetensors and checkpoints are hosted on GitHub Releases or regenerated
 outputs/training_checkpoints/
 *.safetensors
 *.pt

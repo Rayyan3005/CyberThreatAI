@@ -456,11 +456,66 @@ def show_automatic_review(report_text, prediction):
 # 5. MODEL LOADING
 # =========================================================
 
+MODEL_RELEASE_URL = (
+    "https://github.com/Rayyan3005/CyberThreatAI/releases/download/v1.0.0/model.safetensors"
+)
+
+
+def download_file_with_progress(url: str, dest_path: Path):
+    """Download model weights with a visual progress bar if running in cloud deployment."""
+    import urllib.request
+
+    progress_bar = st.progress(0)
+    status_text = st.empty()
+    status_text.info(
+        "⬇️ Downloading fine-tuned DistilBERT weights from GitHub Releases (~255MB)... "
+        "This runs once on cloud deployment and is cached."
+    )
+
+    def report_hook(block_num, block_size, total_size):
+        if total_size > 0:
+            downloaded = block_num * block_size
+            percent = min(int(downloaded * 100 / total_size), 100)
+            mb_down = downloaded / (1024 * 1024)
+            mb_total = total_size / (1024 * 1024)
+            progress_bar.progress(
+                percent,
+                text=f"Downloading DistilBERT weights: {percent}% ({mb_down:.1f} MB / {mb_total:.1f} MB)",
+            )
+
+    try:
+        dest_path.parent.mkdir(parents=True, exist_ok=True)
+        temp_dest = dest_path.with_suffix(".tmp")
+        urllib.request.urlretrieve(url, temp_dest, reporthook=report_hook)
+        if temp_dest.exists() and temp_dest.stat().st_size > 1000000:
+            temp_dest.replace(dest_path)
+            progress_bar.empty()
+            status_text.empty()
+            return True
+        else:
+            if temp_dest.exists():
+                temp_dest.unlink()
+            progress_bar.empty()
+            status_text.empty()
+            return False
+    except Exception as exc:
+        progress_bar.empty()
+        status_text.empty()
+        st.warning(f"Note: Could not automatically fetch DistilBERT weights: {exc}")
+        return False
+
+
 @st.cache_resource(show_spinner="Loading DistilBERT...")
 def load_transformer(model_path):
     path = Path(model_path)
+    weights_path = path / "model.safetensors"
+    config_path = path / "config.json"
 
-    if not path.exists() or not (path / "config.json").exists():
+    # In cloud environments (e.g. Streamlit Cloud), auto-download model.safetensors if missing
+    if not weights_path.exists() or weights_path.stat().st_size < 1000000:
+        download_file_with_progress(MODEL_RELEASE_URL, weights_path)
+
+    if not path.exists() or not config_path.exists() or not weights_path.exists():
         return None, None, {}
 
     tokenizer = AutoTokenizer.from_pretrained(str(path))
@@ -635,7 +690,24 @@ st.warning(
 
 
 # =========================================================
-# 10. SIDEBAR
+# 10. LOAD MODELS
+# =========================================================
+
+try:
+    tokenizer, transformer_model, technique_names = load_transformer(
+        DEFAULT_MODEL
+    )
+except Exception as exc:
+    tokenizer, transformer_model, technique_names = None, None, {}
+
+try:
+    baseline_model = load_baseline(BASELINE_MODEL)
+except Exception as exc:
+    baseline_model = None
+
+
+# =========================================================
+# 11. SIDEBAR CONFIGURATION
 # =========================================================
 
 with st.sidebar:
@@ -645,9 +717,22 @@ with st.sidebar:
 
     st.markdown("### Model Configuration")
 
+    model_options = []
+    default_idx = 0
+    if transformer_model is not None:
+        model_options.append("DistilBERT")
+    if baseline_model is not None:
+        model_options.append("TF-IDF + Logistic Regression")
+
+    if not model_options:
+        model_options = ["DistilBERT", "TF-IDF + Logistic Regression"]
+    elif transformer_model is None:
+        default_idx = 0
+
     selected_model = st.radio(
         "Choose a model",
-        ["DistilBERT", "TF-IDF + Logistic Regression"],
+        model_options,
+        index=default_idx,
     )
 
     top_k = st.slider(
@@ -659,49 +744,29 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown("### Model Information")
-    st.caption("DistilBERT: Transformer-based classifier")
-    st.caption("TF-IDF: Text features + Logistic Regression")
+    distil_status = "🟢 Ready" if transformer_model is not None else "⚠️ Unavailable"
+    tfidf_status = "🟢 Ready" if baseline_model is not None else "⚠️ Unavailable"
+    st.caption(f"**DistilBERT**: Transformer-based classifier ({distil_status})")
+    st.caption(f"**TF-IDF**: Text features + Logistic Regression ({tfidf_status})")
     st.info("Scores are model outputs, not calibrated probabilities.")
 
 
-# =========================================================
-# 11. LOAD MODELS
-# =========================================================
-
-try:
-    tokenizer, transformer_model, technique_names = load_transformer(
-        DEFAULT_MODEL
+# Status notices on main area if a model is missing
+if transformer_model is None and baseline_model is not None:
+    st.info(
+        "ℹ️ **DistilBERT weights are downloading or offline.** "
+        "The app is currently operating with the **TF-IDF + Logistic Regression** baseline model. "
+        "You can analyze reports right away."
     )
-except Exception as exc:
-    tokenizer, transformer_model, technique_names = None, None, {}
-    st.error(f"Could not load DistilBERT: {exc}")
-
-try:
-    baseline_model = load_baseline(BASELINE_MODEL)
-except Exception as exc:
-    baseline_model = None
-    st.error(f"Could not load TF-IDF model: {exc}")
-
-if transformer_model is None:
-    st.warning(
-        f"DistilBERT model not found or could not load: {DEFAULT_MODEL}"
-    )
-
-if baseline_model is None:
-    st.warning(
-        "TF-IDF model not found or could not load. "
-        "Check model/tfidf_logistic_regression.pkl."
-    )
+elif transformer_model is None and baseline_model is None:
+    st.error("No models are available. Check the model folder and saved files.")
 
 
 # =========================================================
 # 12. REPORT INPUT AND ANALYSIS
 # =========================================================
 
-if transformer_model is None and baseline_model is None:
-    st.error("No models are available. Check the model folder and saved files.")
-
-else:
+if transformer_model is not None or baseline_model is not None:
     st.markdown(
         '<div class="section-heading">Threat Report Analysis</div>',
         unsafe_allow_html=True,
